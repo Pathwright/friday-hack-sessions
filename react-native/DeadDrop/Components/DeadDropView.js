@@ -1,52 +1,22 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
-'use strict';
-
 var React = require('react-native');
 var {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
-  NavigatorIOS,
   ListView,
-  TouchableHighlight,
+  TouchableHighlight
 } = React;
 
-var notesData = [
-  {id: 1, body: "This is my note!"},
-  {id: 2, body: "This is my other note!"},
-  {id: 3, body: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit asperiores voluptatum quia saepe deleniti, necessitatibus consequuntur suscipit natus ducimus. Magnam quam eaque necessitatibus totam consectetur, libero debitis quaerat maxime cumque?"},
-]
 
-var NoteView = React.createClass({
 
-  render: function() {
-    return (
-      <View style={styles.view}>
-        <Text>{this.props.note.body}</Text>
-      </View>
-    )
-  }
-
-})
-
-var LocationStatusView = React.createClass({
-
-  render: function() {
-
-  }, 
-
-})
+var NoteView = require("./NoteView")
 
 var DeadDropsView = React.createClass({
 
   getInitialState: function() {
-    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     return {
-      dataSource: ds.cloneWithRows(notesData),
+      dataSource: this.ds.cloneWithRows(this.props.notesStore.notes),
       location: "unknown"
     };
   },
@@ -58,6 +28,11 @@ var DeadDropsView = React.createClass({
   },
 
   componentDidMount: function() {
+    this.props.notesStore.registerEventHandler("note:added", ()=> {
+      this.setState({
+        dataSource: this.ds.cloneWithRows(this.props.notesStore.notes),
+      })
+    })
     this.checkPosition()
     this.checkInterval = setInterval( ()=>{this.checkPosition()}, 5000 )
   },
@@ -102,28 +77,7 @@ var DeadDropsView = React.createClass({
 
 })
 
-var DeadDrop = React.createClass({
-
-  render: function() {
-
-    return (
-      <NavigatorIOS
-        ref="appNavigator"
-        style={styles.container}
-        tintColor="#FF6600"
-        initialRoute={{
-          title: "Dead Drops",
-          component: DeadDropsView,
-        }}/>
-    );
-  }
-});
-
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F6F6EF',
-  },
   view: {
     flex: 1,
     paddingTop: 70,
@@ -137,4 +91,4 @@ var styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('AwesomeProject', () => DeadDrop);
+module.exports = DeadDropsView
