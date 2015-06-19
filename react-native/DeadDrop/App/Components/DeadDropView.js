@@ -7,16 +7,17 @@ var {
   TouchableHighlight
 } = React;
 
-
-
 var NoteView = require("./NoteView")
 
 var DeadDropsView = React.createClass({
 
   getInitialState: function() {
+
+    var notes = this.props.notes
+
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     return {
-      dataSource: this.ds.cloneWithRows(this.props.notesStore.notes),
+      dataSource: this.ds.cloneWithRows(notes),
       location: "unknown"
     };
   },
@@ -28,15 +29,9 @@ var DeadDropsView = React.createClass({
   },
 
   componentDidMount: function() {
-    this.props.notesStore.registerEventHandler("note:added", ()=> {
-      this.setState({
-        dataSource: this.ds.cloneWithRows(this.props.notesStore.notes),
-      })
-    })
     this.checkPosition()
     this.checkInterval = setInterval( ()=>{this.checkPosition()}, 5000 )
   },
-
 
   onSelectNote: function(note){
     this.props.navigator.push({
