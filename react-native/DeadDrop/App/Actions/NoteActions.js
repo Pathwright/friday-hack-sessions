@@ -23,6 +23,14 @@ class NoteActions {
     this.dispatch(error)
   }
 
+  saveDraftNote(text) {
+    this.dispatch(text)
+  }
+
+  draftNote(text) {
+    this.dispatch(text)
+  }
+
 
 }
 

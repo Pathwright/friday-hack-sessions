@@ -9,6 +9,10 @@ var {
 
 var NoteView = require("./NoteView")
 
+var NotesStore = require("../Stores/NotesStore")
+
+
+
 var DeadDropsView = React.createClass({
 
   getInitialState: function() {
@@ -29,9 +33,11 @@ var DeadDropsView = React.createClass({
   },
 
   componentDidMount: function() {
+    NotesStore.listen(this.onChange)
     this.checkPosition()
     this.checkInterval = setInterval( ()=>{this.checkPosition()}, 5000 )
   },
+
 
   onSelectNote: function(note){
     this.props.navigator.push({

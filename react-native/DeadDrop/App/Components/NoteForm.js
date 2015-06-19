@@ -11,10 +11,12 @@ var {
   TouchableHighlight,
 } = React;
 
+var NoteActions = require("../Actions/NoteActions")
+
 var NoteForm = React.createClass({
 
   updateNote: function(text) {
-    this.props.notesStore.draftNote = text
+    NoteActions.draftNote(text)
     this.setState({input: text})
   },
 

@@ -38,8 +38,40 @@ var DeadDrop = React.createClass({
   },
 
   onChange: function(state){
+    console.log("onChange: ", state)
     this.setState(state)
-  },  
+    if (this.refs.appNavigator) {
+      this.replaceRoute = this.getListRoute()
+    }
+  },
+
+  componentDidUpdate: function() {
+    if (this.replaceRoute)
+      this.refs.appNavigator.replace(this.replaceRoute)
+  },
+
+  getListRoute: function() {
+    return {
+      title: "Dead Drops",
+      component: DeadDropView,
+      rightButtonTitle: "Add Note",
+      passProps: {notes: this.state.notes},
+      onRightButtonPress: () => {
+        this.refs.appNavigator.push({
+          title: "test",
+          component: NoteForm,
+          passProps: {notes: this.state.notes},
+          rightButtonTitle: "Save Note",
+          onRightButtonPress: () => {
+            //notesStore.addDraftNote()
+            console.log('this: ', this)
+            NoteActions.saveDraftNote()
+            this.refs.appNavigator.pop()
+          }
+        })
+      }
+    }
+  },
 
   render: function() {
 
@@ -60,23 +92,7 @@ var DeadDrop = React.createClass({
           ref="appNavigator"
           style={styles.container}
           tintColor="#FF6600"
-          initialRoute={{
-            title: "Dead Drops",
-            component: DeadDropView,
-            rightButtonTitle: "Add Note",
-            passProps: {notes: this.state.notes},
-            onRightButtonPress: () => {
-              this.refs.appNavigator.push({
-                title: "test",
-                component: NoteForm,
-                passProps: {notes: this.state.notes},
-                rightButtonTitle: "Save Note",
-                onRightButtonPress: () => {
-                  //notesStore.addDraftNote()
-                  this.refs.appNavigator.pop()
-                }
-            })}
-          }}/>
+          initialRoute={this.getListRoute()}/>
       );
     }
   }
