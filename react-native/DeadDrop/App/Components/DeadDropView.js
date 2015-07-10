@@ -1,4 +1,5 @@
 var React = require('react-native');
+import connectToStores from 'alt/utils/connectToStores';
 var {
   StyleSheet,
   Text,

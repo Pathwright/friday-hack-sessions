@@ -32,6 +32,7 @@ class NoteStore {
   handleSaveDraftNote() {
     this.notes.push({id: this.notes.length, body: this.draftNote})
     this.draftNote = ""
+    return false
   }  
   
   handleDraftNote(text) {

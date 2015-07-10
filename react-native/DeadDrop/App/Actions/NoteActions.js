@@ -23,8 +23,9 @@ class NoteActions {
     this.dispatch(error)
   }
 
-  saveDraftNote(text) {
-    this.dispatch(text)
+  saveDraftNote() {
+    console.log("NoteActions.saveDraftNote()")
+    this.dispatch()
   }
 
   draftNote(text) {
