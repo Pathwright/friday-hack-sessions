@@ -41,7 +41,9 @@
     "gulp-rimraf": "~0.1.1",
     "gulp-util": "~3.0.6",
     "gulp-rev-replace": "~0.4.2",
-    "run-sequence": "~1.1.2"
+    "run-sequence": "~1.1.2",
+    "node-sass": "~3.2.0",
+    "sass-loader": "~2.0.1"
   },
   "dependencies": {
     "alt": "^0.16.10",
@@ -58,6 +60,7 @@
     "react-zeroclipboard": "^1.1.0",
     "underscore": "^1.8.3",
     "validator": "^3.41.2",
-    "webpack": "~1.12.0"
+    "webpack": "~1.12.0",
+    "react-motion": "~0.2.7"
   }
 }
