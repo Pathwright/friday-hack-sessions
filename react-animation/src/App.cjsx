@@ -19,7 +19,10 @@ StepList = React.createClass
       <ul>
         {
           @props.steps.map (step, index)=>
-            interpolated = interpolatedVals[index]
+            if @props.open
+              interpolated = interpolatedVals[index]
+            else
+              interpolated = interpolatedVals[(@props.steps.length-1) - index]
             style =
               transform: "translate3d(0, #{interpolated.yposition.val}px, 0)"
               opacity: interpolated.opacity.val
@@ -56,10 +59,10 @@ StepList = React.createClass
     steps = @getStepsAsObject()
     vals = {}
     trackIndex = 0
-    if !@props.open
-      #steps = @getStepsAsObject(yes)
-      console.log "reversed: ", steps
-      trackIndex = @props.steps.length - 1
+    # if !@props.open
+    #   #steps = @getStepsAsObject(yes)
+    #   console.log "reversed: ", steps
+    #   trackIndex = @props.steps.length - 1
 
     for key, step of steps
       console.log "key, trackIndex", key, trackIndex
@@ -70,10 +73,10 @@ StepList = React.createClass
         else
           vals[key] = {opacity: {val: 0}, yposition: {val: -40}}
       else
-        if key is 0
-          prev = prevVal[@props.steps.length-1]
-        else
+        if @props.open
           prev = prevVal[key-1]
+        else
+          prev = prevVal[key+1]
         vals[key] = {opacity: {val: prev.opacity.val}, yposition: {val:prev.yposition.val}}
     return vals
 

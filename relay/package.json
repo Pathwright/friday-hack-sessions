@@ -1,0 +1,29 @@
+{
+  "name": "relay",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "./node_modules/.bin/webpack-dev-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-loader": "~5.3.2",
+    "babel-core": "~5.8.25",
+    "webpack-dev-server": "~1.11.0",
+    "webpack": "~1.12.2",
+    "react-dom": "~0.14.0-rc1",
+    "react": "~0.14.0-rc1",
+    "graphql": "~0.4.4",
+    "babel-relay-plugin": "~0.2.5",
+    "react-relay": "~0.3.2",
+    "sync-request": "~2.0.1"
+  },
+  "devDependencies": {
+    "coffee-script": "~1.10.0",
+    "coffee-loader": "~0.7.2",
+    "cjsx-loader": "~2.0.1"
+  }
+}
