@@ -17,9 +17,17 @@ sayCoffeeTime = ->
   quote = ai.getQuote(hr)
   {emoji, quote}
 
+getChannelByID = (channels, id)->
+  _.find channels, (c)-> c.id is id
+
+bot.on "start", ->
+  console.log "channels?", this.channels
+
 bot.on "message", (data)->
   if data.type is "message" and data.username isnt settings.name
+    console.log "message: ", data
     incomingMessage = data.text
     if incomingMessage.indexOf("coffee") > -1
       response = sayCoffeeTime()
-      bot.postMessageToChannel(settings.channel, response.quote, {icon_emoji: response.emoji})
+      channel = getChannelByID(this.channels, data.channel)
+      bot.postMessageToChannel(channel.name, response.quote, {icon_emoji: response.emoji})
