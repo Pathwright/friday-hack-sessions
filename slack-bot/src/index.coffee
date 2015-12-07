@@ -15,13 +15,14 @@ sayCoffeeTime = ->
   isInRange = utils.isInRange(hr)
   emoji = ai.getEmoji(hr)
   quote = ai.getQuote(hr)
+  next = not isInRange
+    next = "next coffee time starts in #{}"
+  else
+    next = "ends in #{utils.getNextStartDate()}"
   {emoji, quote}
 
 getChannelByID = (channels, id)->
   _.find channels, (c)-> c.id is id
-
-bot.on "start", ->
-  console.log "channels?", this.channels
 
 bot.on "message", (data)->
   if data.type is "message" and data.username isnt settings.name

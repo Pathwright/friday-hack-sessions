@@ -1,19 +1,6 @@
 _ = require("underscore")
 ct = require("./utils")
 
-emojiMap =
-  ":thumbs_up:": "&#128077;"
-  ":thumbs_down:": "&#128078;"
-  ":happy:": "&#128515;"
-  ":happy_heart:": "&#128525;"
-  ":savour:": "&#x1f60b;"
-  ":cool_happy:": "&#x1f60e;"
-
-  ":sadder:": "&#128557;"
-  ":sad:": "&#128546;"
-  ":scream:": "&#128561;"
-  ":weary:": "&#128553;"
-
 quotes =
   coffeeTime: [
     "Ah yeah, coffee time",
@@ -48,18 +35,13 @@ emojis =
 
 module.exports =
 
-  getEmojiByCode: (code)->
-    emojiMap[code]
-
   getRandQuote: (which)->
     quoteOps = quotes[which]
     quote = _.sample(quoteOps)
     quote
 
   getQuote: (hr)->
-    mood = ct.getMoodScore(hr)
-    inRange = ct.isInRange(hr)
-    if inRange
+    if ct.isInRange(hr)
       return @getRandQuote("coffeeTime")
     else
       return @getRandQuote("notCoffeeTime")
@@ -69,9 +51,7 @@ module.exports =
     _.sample(ops)
 
   getEmoji: (hr)->
-    mood = ct.getMoodScore(hr)
-    inRange = ct.isInRange(hr)
-    if inRange
+    if ct.isInRange(hr)
       return @getRandEmoji("coffeeTime")
     else
       return @getRandEmoji("notCoffeeTime")
