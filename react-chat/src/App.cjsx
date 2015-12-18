@@ -1,29 +1,76 @@
+# Poor man's store/actions, plus Firebase sync
+# --------------------
+
 Firebase = require("firebase")
-firebase = new Firebase("https://wmdmark.firebaseio.com/")
-rootRef = firebase.child("react-chat")
+
+getStore = ->
+  subscribers = []
+  state =
+    username: "User"
+    message: ""
+    messages: []
+
+  firebase = new Firebase("https://wmdmark.firebaseio.com/")
+  db = firebase.child("react-chat")
+
+  subscribe = (callback)-> 
+    subscribers.push(callback)
+
+  onChange = (sync=false)->
+    if sync
+      # sync messages to firebase
+      db.set(state.messages)
+    # notify our subscribers
+    for subscriber in subscribers
+      subscriber(Object.assign({}, state))
+
+  actions =
+    login: (username)->
+      state.username = username
+      onChange()
+
+    watchMessages: ->
+      db.on "value", (snap)->
+        state.messages = snap.val()
+        onChange()
+    
+    addMessage: ->
+      state.messages.push
+        username: state.username
+        message: state.message
+      state.message = ""
+      onChange(true)
+
+    setMessage: (message)->
+      state.message = message
+      onChange()
+
+  {state, actions, subscribe}
+
+
+# Dumb, state-less Components
+# --------------------
 
 Message = (props)->
   {message} = props
-  <blockquote className="Message">
+  <div className="Message">
     <strong>{message.username}:</strong>
     {message.message}
-  </blockquote>
+  </div>
 
-MessageList = React.createClass
-  
-  render: ->
-    {messages} = @props
-    <div className="MessageList">
-      <ul>
-        {
-          messages.map (message, i)-> 
-            <Message message={message} key={i} />
-        }
-      </ul>
-    </div>
+MessageList = (props)->
+  {messages} = props
+  <div className="MessageList">
+    <ul>
+      {
+        messages.map (message, i)-> 
+          <Message message={message} key={i} />
+      }
+    </ul>
+  </div>
 
 MessageInput = (props)->
-  {username, message, addMessage, setMessage} = props
+  {username, message, actions} = props
 
   onKeyDown = (e)->
     if e.keyCode is 13
@@ -37,65 +84,27 @@ MessageInput = (props)->
     <input onChange={onChange} onKeyDown={onKeyDown} value={message} />
   </div>
 
-MessageInput.displayName = "MessageInput"
 
-
-state = 
-  username: "Mark"
-  message: ""
-  messages: [
-    {username: "Brad", message: "Hi!"},
-    {username: "Mark", message: "Hello!"},
-    {username: "Joe", message: "Yo!"},
-  ]
-
-subscribers = []
-subscribe = (callback)->
-  subscribers.push(callback)
-
-onStateChange = (syncState=false)->
-  if syncState
-    rootRef.set(state.messages)
-  for subscriber in subscribers
-    subscriber(Object.assign({}, state))
-
-actions =
-  login: (username)->
-    state.username = username
-    onStateChange()
-  
-  addMessage: ->
-    state.messages.push
-      username: state.username
-      message: state.message
-    state.message = ""
-    onStateChange(true)
-
-  setMessage: (message)->
-    state.message = message
-    onStateChange()
-
-  recieveMessages: (messages)->
-    state.messages = messages
-    onStateChange()
-
+# Our single top-level "smart" component
+# ----------------------------------------
 App = React.createClass
   
-  shouldComponentUpdate: (prevState, nextState)->
-    prevState isnt nextState
+  getInitialState: ->
+    messages: []
+    username: ""
 
-  getInitialState: -> state
+  componentWillMount: -> 
+    @store = getStore()
+    @store.subscribe(@setState.bind(@))
 
-  componentDidMount: -> 
-    subscribe(@setState.bind(@))
-    rootRef.on "value", (snap)->
-      actions.recieveMessages(snap.val())
+  componentDidMount: ->
+    @store.actions.watchMessages()
 
   render: ->
     {messages, username} = @state
     <div className="App">
       <MessageList messages={messages} />
-      <MessageInput {...@state} actions={actions} />
+      <MessageInput {...@state} actions={@store.actions} />
     </div>
 
 module.exports = App
