@@ -3,6 +3,9 @@ require("expose?_!underscore");
 require("expose?Promise!promise");
 
 require("./styles/styles.scss")
+
+var ReactDOM = require("react-dom")
+
 var App = require("./App")
 
-React.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById('root'))
