@@ -1,0 +1,51 @@
+{
+  "name": "ReactChat",
+  "version": "0.0.1",
+  "description": "React chat demo!",
+  "scripts": {
+    "start": "node dev-server.js",
+    "build-prod": "webpack -p --config webpack.prod.config.js"
+  },
+  "keywords": [
+    "react",
+    "reactjs"
+  ],
+  "author": "Mark Johnson",
+  "license": "MIT",
+  "homepage": "http://greenvillelists.com",
+  "devDependencies": {
+    "babel-core": "^4.7.4",
+    "babel-loader": "^4.1.0",
+    "cjsx-loader": "~2.0.1",
+    "coffee-loader": "~0.7.2",
+    "coffee-script": "~1.9.1",
+    "css-loader": "~0.15.1",
+    "expose-loader": "~0.6.0",
+    "file-loader": "^0.8.4",
+    "json-loader": "~0.5.1",
+    "node-sass": "^3.4.2",
+    "object-assign": "~2.0.0",
+    "react-hot-loader": "^1.2.8",
+    "sass-loader": "~2.0.1",
+    "style-loader": "~0.12.3",
+    "svgo": "^0.5.3",
+    "svgo-loader": "^1.1.0",
+    "url-loader": "^0.5.6",
+    "webpack": "^1.10.5",
+    "webpack-dev-middleware": "~1.2.0",
+    "webpack-dev-server": "~1.10.1"
+  },
+  "dependencies": {
+    "body-parser": "~1.13.2",
+    "color": "^0.10.1",
+    "firebase": "^2.2.7",
+    "moment": "^2.10.3",
+    "pluralize": "^1.1.2",
+    "promise": "^7.0.3",
+    "react": "^0.13.3",
+    "underscore": "^1.8.3",
+    "validator": "^3.41.2",
+    "webpack": "~1.12.0",
+    "react-motion": "~0.2.7"
+  }
+}
