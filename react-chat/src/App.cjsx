@@ -37,6 +37,7 @@ MessageInput = (props)->
     <input onChange={onChange} onKeyDown={onKeyDown} value={message} />
   </div>
 
+MessageInput.displayName = "MessageInput"
 
 
 state = 
@@ -92,7 +93,7 @@ App = React.createClass
 
   render: ->
     {messages, username} = @state
-    <div className="container">
+    <div className="App">
       <MessageList messages={messages} />
       <MessageInput {...@state} actions={actions} />
     </div>
