@@ -5,4 +5,12 @@ ReactDOM = require("react-dom")
 
 App = require("./App")
 
-ReactDOM.render(<App />, document.getElementById('app'))
+{connect, Provider} = require("react-redux")
+
+{store} = require("./store")
+
+ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>
+, document.getElementById('app'))
